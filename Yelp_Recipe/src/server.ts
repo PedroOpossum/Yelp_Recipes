@@ -6,10 +6,24 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
+
 const app = express();
+app.use(cors());
+dotenv.config();
+
+// Connect to MongoDB
+mongoose.connect(process.env['MONGODB_URI'] as string)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log(err));
+
+  
 const angularApp = new AngularNodeAppEngine();
 
 /**
